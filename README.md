@@ -22,7 +22,7 @@ This application automatically detects active dialogues in Genshin Impact and pr
 
 1. Download the latest release from the [Releases page](https://github.com/spectreq666/GenshinImpact-DialogieSkipper/releases)
 2. Extract the ZIP file to your preferred location
-3. Launch an .exe file with admin rights.
+3. Launch an .exe file with admin rights (needs for keyboard emulation).
 
 ## 🎮 Usage
 
