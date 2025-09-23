@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenshinImpactDialogieSkipper", "GenshinImpactDialogieSkipper\GenshinImpactDialogieSkipper.csproj", "{2A75ED7A-16E8-47DD-B13F-6679C85D3909}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenshinImpactDialogueSkipper", "GenshinImpactDialogueSkipper\GenshinImpactDialogueSkipper.csproj", "{2A75ED7A-16E8-47DD-B13F-6679C85D3909}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
