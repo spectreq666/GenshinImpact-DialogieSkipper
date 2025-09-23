@@ -2,6 +2,8 @@
 
 ![.NET Build](https://github.com/spectreq666/GenshinImpact-DialogueSkipper/actions/workflows/dotnet.yml/badge.svg)
 
+![flins-flins-genshin](https://github.com/user-attachments/assets/7f31ded2-8a97-49ed-95fe-7c88fead91bb)
+
 Automated dialogue skipping utility for Genshin Impact using computer vision and image recognition.
 Use at your own risk.
 
