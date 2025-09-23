@@ -231,7 +231,7 @@ static class Program
         Cv2.MatchTemplate(screenGray, templateGray, result, TemplateMatchModes.CCoeffNormed);
         Cv2.MinMaxLoc(result, out _, out double maxVal, out _, out _);
         
-        bool isActive = maxVal >= 0.8;
+        bool isActive = maxVal >= 0.9;
         
         Console.WriteLine($"Template match value: {maxVal:F3} -> DialogueActive: {isActive}");
 
