@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 
-namespace GenshinImpactDialogieSkipper;
+namespace GenshinImpactDialogueSkipper;
 
 static class Program
 {

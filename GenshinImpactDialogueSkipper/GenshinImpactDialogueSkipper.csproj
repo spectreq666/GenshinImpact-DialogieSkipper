@@ -9,7 +9,7 @@
         <UseWindowsForms>true</UseWindowsForms>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>icon.ico</ApplicationIcon>
-        <RootNamespace>GenshinImpactDialogieSkipper</RootNamespace>
+        <RootNamespace>GenshinImpactDialogueSkipper</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
