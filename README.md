@@ -32,7 +32,7 @@ This application automatically detects active dialogues in Genshin Impact and pr
 ## 🎮 Usage
 
 1. **Launch Genshin Impact** and enter the game world
-2. **Run the application** as Administrator (important for screen capture)
+2. **Run the application** as Administrator (important for screen capture and key emulation)
 3. **Configure resolution** on first run if needed
 4. **Use hotkeys** to control the application:
 
