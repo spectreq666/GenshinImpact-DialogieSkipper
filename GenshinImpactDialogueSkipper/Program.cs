@@ -22,6 +22,7 @@ static class Program
     private const byte VK_F = 0x46;
 
     private static string Status = "pause";
+    private static bool IsLoggingEnabled = false;
     private static int ScreenWidth;
     private static int ScreenHeight;
 
@@ -33,12 +34,13 @@ static class Program
         Console.Clear();
         Console.WriteLine("Welcome to Genshin Impact Dialogue Skipper by spectreq\n");
 
-        LoadScreenResolution();
+        LoadDotEnv();
 
         Console.WriteLine("-------------");
         Console.WriteLine("F8 to start");
         Console.WriteLine("F9 to pause");
         Console.WriteLine("F12 to quit");
+        Console.WriteLine("F10 Enable logging");
         Console.WriteLine("-------------");
         
         Task.Run(KeyListener);
@@ -46,7 +48,12 @@ static class Program
         Task.Run(MainLoop).Wait();
     }
 
-    private static void LoadScreenResolution()
+    private static void SaveDotEnv()
+    {
+        File.WriteAllText(EnvFile, $"WIDTH={ScreenWidth}\nHEIGHT={ScreenHeight}\nENABLE_LOGGING: {IsLoggingEnabled}");
+    }
+    
+    private static void LoadDotEnv()
     {
         if (File.Exists(EnvFile))
         {
@@ -56,6 +63,8 @@ static class Program
                     ScreenWidth = int.Parse(line.Split('=')[1]);
                 if (line.StartsWith("HEIGHT="))
                     ScreenHeight = int.Parse(line.Split('=')[1]);
+                if (line.StartsWith("ENABLE_LOGGING="))
+                    IsLoggingEnabled = bool.Parse(line.Split('=')[1]);
             }
         }
 
@@ -76,7 +85,7 @@ static class Program
                 Console.WriteLine($"New resolution set to {ScreenWidth}x{ScreenHeight}");
             }
 
-            File.WriteAllText(EnvFile, $"WIDTH={ScreenWidth}\nHEIGHT={ScreenHeight}\n");
+            SaveDotEnv();
         }
     }
 
@@ -93,7 +102,9 @@ static class Program
         keybd_event(VK_F, 0, KEYEVENTF_KEYDOWN, UIntPtr.Zero);
         Thread.Sleep(30);
         keybd_event(VK_F, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
-        Console.WriteLine("Pressed F");
+        
+        if (IsLoggingEnabled)
+            Console.WriteLine("Pressed F");
     }
 
     private static double RandomFInterval() =>
@@ -104,7 +115,10 @@ static class Program
     private static double TakeRandomBreak()
     {
         double duration = Rnd.NextDouble() * 5 + 3;
-        Console.WriteLine($"Taking a {duration:F1} second break...");
+        
+        if (IsLoggingEnabled)
+            Console.WriteLine($"Taking a {duration:F1} second break...");
+        
         return duration;
     }
 
@@ -179,11 +193,23 @@ static class Program
             var key = Console.ReadKey(true).Key;
             if (key == ConsoleKey.F8)
             {
+                if (!IsGenshinActive())
+                {
+                    Console.WriteLine("[Error] Cannot start capture.\nGenshin Impact is not launched");
+                    continue;
+                }
+                
                 Status = "run";
                 Console.WriteLine("RUNNING - Auto F-key pressing enabled");
             }
             else if (key == ConsoleKey.F9)
             {
+                if (Status == "pause")
+                {
+                    Console.WriteLine("[Error] Skipper is not running");
+                    continue;
+                }
+                
                 Status = "pause";
                 Console.WriteLine("PAUSED - Auto F-key pressing disabled");
             }
@@ -191,6 +217,14 @@ static class Program
             {
                 Status = "exit";
                 break;
+            }
+            else if (key == ConsoleKey.F10)
+            {
+                IsLoggingEnabled = !IsLoggingEnabled;
+
+                Console.WriteLine(IsLoggingEnabled ? "[Logging] Enabled" : "[Logging] Disabled");
+                
+                SaveDotEnv();
             }
         }
     }
@@ -233,7 +267,8 @@ static class Program
         
         bool isActive = maxVal >= 0.9;
         
-        Console.WriteLine($"Template match value: {maxVal:F3} -> DialogueActive: {isActive}");
+        if (IsLoggingEnabled) 
+            Console.WriteLine($"Template match value: {maxVal:F3} -> DialogueActive: {isActive}");
 
         return isActive;
     }
