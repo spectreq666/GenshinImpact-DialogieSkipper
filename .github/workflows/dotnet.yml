@@ -33,14 +33,14 @@ jobs:
           dotnet build --configuration Release --no-restore
 
       - name: Create Release Asset
-        if: github.event_name == 'release' && github.event.action == 'published'
+        if: github.event_name == 'release'
         run: |
           dotnet publish -c Release -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true -o publish
           
           7z a -tzip "${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-win-x64.zip" "./publish/*"
 
       - name: Upload to Release
-        if: github.event_name == 'release' && github.event.action == 'published'
+        if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
