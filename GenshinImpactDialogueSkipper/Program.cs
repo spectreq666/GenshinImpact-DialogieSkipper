@@ -50,7 +50,7 @@ static class Program
 
     private static void SaveDotEnv()
     {
-        File.WriteAllText(EnvFile, $"WIDTH={ScreenWidth}\nHEIGHT={ScreenHeight}\nENABLE_LOGGING: {IsLoggingEnabled}");
+        File.WriteAllText(EnvFile, $"WIDTH={ScreenWidth}\nHEIGHT={ScreenHeight}\nENABLE_LOGGING:{IsLoggingEnabled}");
     }
     
     private static void LoadDotEnv()
