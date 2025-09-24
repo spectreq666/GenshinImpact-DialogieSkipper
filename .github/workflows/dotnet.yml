@@ -1,4 +1,4 @@
-﻿name: .NET Build
+﻿name: .NET Build and Release
 
 on:
   push:
@@ -11,6 +11,8 @@ on:
     paths-ignore:
       - 'README.md'
       - '.gitignore'
+  release:
+    types: [ published ]
 
 jobs:
   build:
@@ -25,8 +27,25 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Restore and Build
+        run: |
+          dotnet restore
+          dotnet build --configuration Release --no-restore
 
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
+      - name: Create Release Asset
+        if: github.event_name == 'release' && github.event.action == 'published'
+        run: |
+          dotnet publish -c Release -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true -o publish
+          
+          7z a -tzip "${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-win-x64.zip" "./publish/*"
+
+      - name: Upload to Release
+        if: github.event_name == 'release' && github.event.action == 'published'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-win-x64.zip
+          asset_name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-win-x64.zip
+          asset_content_type: application/zip
